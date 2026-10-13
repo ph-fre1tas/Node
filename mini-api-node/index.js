@@ -33,6 +33,12 @@ app.post("/produtos", (req, res) => {
     nome: req.body.nome,
     preco: req.body.preco
   }
+
+  if (typeof novoProduto.preco !== 'number' || novoProduto.preco <= 0 || typeof novoProduto.nome !== "string" || novoProduto.nome.trim() === "") {
+    return res.status(400).json({
+      erro: "Dado inválidos"
+    })
+  }
   produtos.push(novoProduto)
 
   res.status(201).json(novoProduto)
@@ -64,10 +70,16 @@ app.put("/produtos/:id", (req, res) => {
     })
   }
 
+  if (typeof req.body.preco !== 'number' || req.body.preco <= 0 || typeof req.body.nome !== "string" || req.body.nome.trim() === "") {
+    return res.status(400).json({
+      erro: "Dado inválidos"
+    })
+  }
+
   produtos[indice].nome = req.body.nome;
   produtos[indice].preco = req.body.preco;
   
-  res.status(200).json(produtos)
+  res.status(200).json(produtos[indice])
 });
 
 app.listen(3000, () => {

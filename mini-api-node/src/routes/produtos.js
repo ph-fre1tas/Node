@@ -1,15 +1,13 @@
-import { produtos } from "../data/produtos.js";
 import { Router } from "express";
 import db from "../database.js";
+import listarProdutos from "../repositories/produtosRepository.js";
 
 const router = Router();
 
-router.get("/", (req,res) => {
-    const produtos = db.prepare(
-      "SELECT * FROM produtos"
-    ).all();
+router.get("/", (req, res) => {
+  const produtos = listarProdutos();
 
-    res.json(produtos)
+  res.json(produtos)
 });
 
 router.get("/:id", (req, res) => {
@@ -63,9 +61,7 @@ router.delete("/:id", (req, res) => {
     });
   }
 
-  const produtos = db.prepare(
-      "SELECT * FROM produtos"
-    ).all();
+  const produtos = listarProdutos();
 
   res.status(200).json(produtos);
 });

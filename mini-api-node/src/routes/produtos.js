@@ -1,11 +1,30 @@
 import { Router } from "express";
-import { listarProdutos, buscarProdutoPorId, criarProduto, atualizarProduto, deletarProduto } from "../repositories/produtosRepository.js";
+import { listarProdutos, buscarProdutoPorId, criarProduto, atualizarProduto, deletarProduto, listarProdutosMaisCaros } from "../repositories/produtosRepository.js";
 
 const router = Router();
 
 router.get("/", (req, res) => {
   const produtos = listarProdutos();
   res.json(produtos)
+});
+
+router.get("/mais-caros", (req, res) => {
+  let preco = req.query.precoMinimo;
+
+  if (preco === undefined) {
+    preco = 100;
+  } else {
+    preco = Number(preco);
+  }
+
+  if (Number.isNaN(preco) || preco <= 0) {
+    return res.status(400).json({
+      erro: "Preço mínimo inválido"
+    });
+  }
+  // ou usar const preco = Number(req.query.precoMinimo ?? 100);
+
+  res.json(listarProdutosMaisCaros(preco));
 });
 
 router.get("/:id", (req, res) => {

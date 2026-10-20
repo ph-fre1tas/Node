@@ -52,3 +52,9 @@ export function deletarProduto(id) {
 
   return true;
 }
+
+export function listarProdutosMaisCaros(preco) {
+  return db.prepare(
+    "SELECT * FROM produtos WHERE preco > ?"
+  ).all(preco);
+}
